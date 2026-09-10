@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UHURU Digital Consultations — Invoice Builder</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="loginScreen" class="login-screen">
+    <div class="login-card">
+      <div class="login-logo"><img id="loginLogo" alt="UHURU logo"></div>
+      <h1>UHURU Digital</h1>
+      <p>Invoice Management System</p>
+      <form id="loginForm">
+        <label>Admin password</label>
+        <input id="loginPassword" type="password" placeholder="Enter password" required>
+        <button class="btn primary full" type="submit">Open Dashboard</button>
+        <div id="loginError" class="error"></div>
+      </form>
+      <small>Default password: <b>admin123</b></small>
+    </div>
+  </div>
+
+  <div id="app" class="app hidden">
+    <header class="topbar">
+      <div class="brand">
+        <img id="brandLogo" alt="UHURU logo">
+        <div><strong>UHURU DIGITAL</strong><span>CONSULTATIONS</span></div>
+      </div>
+      <div class="top-actions">
+        <button class="btn ghost" id="newInvoiceBtn">＋ New Invoice</button>
+        <button class="btn secondary" id="printBtn">🖨 PDF / Print</button>
+        <button class="btn danger" id="logoutBtn">Logout</button>
+      </div>
+    </header>
+
+    <div class="layout">
+      <aside class="sidebar">
+        <button class="nav active" data-section="invoiceSection">🧾 Invoice Builder</button>
+        <button class="nav" data-section="companySection">🏢 Company Details</button>
+        <button class="nav" data-section="appearanceSection">🎨 Appearance</button>
+        <button class="nav" data-section="historySection">📁 Saved Invoices</button>
+        <button class="nav" data-section="backupSection">💾 Backup & Settings</button>
+      </aside>
+
+      <main class="content">
+        <section id="invoiceSection" class="section active-section">
+          <div class="section-head">
+            <div><h2>Invoice Builder</h2><p>Edit everything that appears on the invoice.</p></div>
+            <div class="invoice-number-box"><label>Invoice No.</label><input id="invoiceNumber" type="text"></div>
+          </div>
+
+          <div class="builder-grid">
+            <div class="panel editor-panel">
+              <div class="panel-title">Invoice Information</div>
+              <div class="form-grid">
+                <div><label>Invoice date</label><input id="invoiceDate" type="date"></div>
+                <div><label>Due date</label><input id="dueDate" type="date"></div>
+                <div><label>Currency</label><input id="currency" value="ZAR"></div>
+                <div><label>VAT / Tax %</label><input id="taxRate" type="number" min="0" step="0.01"></div>
+              </div>
+
+              <div class="panel-title space-top">Bill To</div>
+              <div class="form-grid">
+                <div><label>Customer / Business name</label><input id="clientName"></div>
+                <div><label>Contact person</label><input id="clientContact"></div>
+                <div class="wide"><label>Address</label><textarea id="clientAddress" rows="2"></textarea></div>
+                <div><label>Phone</label><input id="clientPhone"></div>
+                <div><label>Email</label><input id="clientEmail" type="email"></div>
+              </div>
+
+              <div class="panel-title space-top">Line Items</div>
+              <div class="items-editor">
+                <div class="item-head"><span>Description</span><span>Qty</span><span>Rate</span><span>Amount</span><span></span></div>
+                <div id="itemsEditor"></div>
+                <button class="btn small secondary" id="addItemBtn">＋ Add Item</button>
+              </div>
+
+              <div class="form-grid space-top">
+                <div class="wide"><label>Notes / payment terms</label><textarea id="notes" rows="3"></textarea></div>
+                <div class="wide"><label>Bank / payment details</label><textarea id="paymentDetails" rows="3"></textarea></div>
+              </div>
+
+              <div class="editor-actions">
+                <button class="btn primary" id="saveInvoiceBtn">Save Invoice</button>
+                <button class="btn secondary" id="clearInvoiceBtn">Clear Form</button>
+              </div>
+            </div>
+
+            <div class="panel preview-panel">
+              <div class="preview-head"><strong>Live Preview</strong><span>Updates automatically</span></div>
+              <div id="invoicePreview" class="invoice-paper"></div>
+            </div>
+          </div>
+        </section>
+
+        <section id="companySection" class="section">
+          <div class="section-head"><div><h2>Company Details</h2><p>These details appear on every new invoice.</p></div></div>
+          <div class="panel">
+            <div class="form-grid">
+              <div class="wide"><label>Business name</label><input id="companyName"></div>
+              <div><label>Registration / reference</label><input id="companyReg"></div>
+              <div><label>VAT number</label><input id="companyVat"></div>
+              <div class="wide"><label>Business address</label><textarea id="companyAddress" rows="3"></textarea></div>
+              <div><label>Phone</label><input id="companyPhone"></div>
+              <div><label>WhatsApp</label><input id="companyWhatsApp"></div>
+              <div><label>Email</label><input id="companyEmail"></div>
+              <div><label>Website</label><input id="companyWebsite"></div>
+              <div class="wide"><label>Default payment details</label><textarea id="defaultPayment" rows="4"></textarea></div>
+            </div>
+            <div class="upload-box">
+              <div><strong>Company Logo</strong><p>Upload a JPG/PNG logo. It is stored in this browser's local storage.</p></div>
+              <input id="logoUpload" type="file" accept="image/*">
+              <button class="btn danger small" id="removeLogoBtn">Remove Logo</button>
+            </div>
+            <button class="btn primary" id="saveCompanyBtn">Save Company Details</button>
+          </div>
+        </section>
+
+        <section id="appearanceSection" class="section">
+          <div class="section-head"><div><h2>Appearance</h2><p>Change the invoice's accent colour and wording.</p></div></div>
+          <div class="panel">
+            <div class="form-grid">
+              <div><label>Accent colour</label><input id="accentColor" type="color"></div>
+              <div><label>Invoice title</label><input id="invoiceTitle"></div>
+              <div><label>Footer text</label><input id="footerText"></div>
+              <div><label>Prepared by</label><input id="preparedBy"></div>
+            </div>
+            <button class="btn primary" id="saveAppearanceBtn">Save Appearance</button>
+          </div>
+        </section>
+
+        <section id="historySection" class="section">
+          <div class="section-head"><div><h2>Saved Invoices</h2><p>Invoices are stored locally on this device/browser.</p></div></div>
+          <div class="panel">
+            <div class="table-wrap">
+              <table><thead><tr><th>Invoice</th><th>Client</th><th>Date</th><th>Total</th><th>Actions</th></tr></thead>
+              <tbody id="historyBody"></tbody></table>
+            </div>
+          </div>
+        </section>
+
+        <section id="backupSection" class="section">
+          <div class="section-head"><div><h2>Backup & Settings</h2><p>Move your local invoice data between browsers or computers.</p></div></div>
+          <div class="panel backup-panel">
+            <div class="backup-card"><h3>Export Backup</h3><p>Download all company settings and saved invoices as a JSON file.</p><button class="btn primary" id="exportBtn">Download Backup</button></div>
+            <div class="backup-card"><h3>Import Backup</h3><p>Restore a previously exported JSON backup.</p><input id="importFile" type="file" accept=".json"></div>
+            <div class="backup-card danger-card"><h3>Reset Everything</h3><p>This removes locally stored invoices and settings.</p><button class="btn danger" id="resetBtn">Reset Local Data</button></div>
+            <div class="backup-card"><h3>Change Admin Password</h3><input id="newPassword" type="password" placeholder="New password"><button class="btn secondary" id="changePasswordBtn">Change Password</button></div>
+          </div>
+        </section>
+      </main>
+    </div>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>
